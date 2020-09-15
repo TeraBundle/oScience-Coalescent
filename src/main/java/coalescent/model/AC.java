@@ -22,13 +22,13 @@ import java.util.Set;
  * Defines MRCA and its probability as the tail value of the recursion.
  * </p>
  * @param <T> subtype of {@code AC}
- * @param <M> subtype of {@code PopGenModel}
+ * @param <M> subtype of {@code CoalescentModel}
  * @author Susanta Tewari
  * @since 1.0.0 Aug 20, 2010
  */
 public interface AC<T extends AC<T, M>, M extends CoalescentModel> {
 
-    /* Recursion - ACs */
+    /** Recursion - Ancestral Configurations */
 
     /**
      * Provides an iterable over the alleles that can undergo the specified event type. Since this
@@ -56,21 +56,20 @@ public interface AC<T extends AC<T, M>, M extends CoalescentModel> {
      */
     T apply(Object allele, EventType type, Object... extra);
 
-    /**
-     *
-     */
-    default Object getEventData(Object allele, EventType type, Object... data) {
-        return null;
-    }
+    Iterable<EventType> getEventTypes();
+
 
     /**
-     *
+     * A short-circuit for {@linkplain #alleles(EventType)},
+     * {@linkplain #apply(Object, EventType, Object...) apply()} and
+     * {@linkplain #getEventTypes()} as these methods are primarily used in its
+     * default implementation.
      */
-    default Set<T> nextLevelConfigs() {
+    default Set<T> nextConfigs() {
 
         final Set<T> result = new HashSet<>(10);
 
-        for (final EventType eventType : getModel().getEventTypes()) {
+        for (final EventType eventType : getEventTypes()) {
 
             for (final Object allele : alleles(eventType)) {
 
@@ -82,56 +81,22 @@ public interface AC<T extends AC<T, M>, M extends CoalescentModel> {
     }
 
 
-    /* Jump Prob */
 
     /**
-     * Computes the transition probability from this element to the specified element {@code
-     * transitionElement}. The specified element {@code transitionElement} must be one of the values
-     * returned by {@link #transitions(event)}.
-     * @param type event type
-     * @param ac one of the values returned by {@link #alleles(EventType)}
-     * @return transition probability from this element to the specified one
-     * @throws NullPointerException if any of the parameters is {@code null}
-     * @throws IllegalArgumentException if 1) {@code event} is not present in {@link
-     * #transitionTypes()} 2) {@code transitionElement} is not present in {@link #transitions(Enum
-     * event)}
-     * @deprecated use {@linkplain #jumpProb(Object, EventType, AC, Object...)} instead
-     */
-    @Deprecated
-    default BigDecimal jumpProb(EventType type, T ac) {
-        return jumpProb(type, ac, getModel());
-    }
-
-    /**
+     * Jump Prob to the Ancestral Configurations.
      *
+     * @param allele
+     * @param type
+     * @param ac
+     * @param model
+     * @param eData
+     * @return
      */
-    default BigDecimal jumpProb(Object allele, EventType type, T ac, Object... eData) {
-        return jumpProb(allele, type, ac, getModel(), eData);
-    }
-
-    /**
-     *
-     */
-    default BigDecimal jumpProb(Object allele, EventType type, T ac, M model, Object... eData) {
-        return jumpProb(type, ac, getModel(), eData);
-    }
-
-    /**
-     * {@code ac} is not modified with the supplied {@code model}.
-     * @param type event type
-     * @param ac one of the values returned by {@link #alleles(EventType)}
-     * @param model model on which the computation is based
-     * @return transition probability from this element to the specified one, assuming the supplied
-     * model on {@code ac}
-     * @deprecated use the overloaded version with the allele
-     */
-    @Deprecated
-    default BigDecimal jumpProb(EventType type, T ac, M model, Object... eventData) {
-        throw new UnsupportedOperationException();
-    }
+    BigDecimal jumpProb(Object allele, EventType type, T ac, M model, Object... eData);
 
 
-    /* MRCA */
+
+    /** MRCA: Most Recent Common Ancestor - Recursion`s Initial Condition */
 
     /**
      * A statistic is an MRCA if its probability can be computed analytically i.e., invoking {@code
@@ -148,14 +113,6 @@ public interface AC<T extends AC<T, M>, M extends CoalescentModel> {
     Integer eventsToMRCA();
 
     /**
-     * Computes analytically the probability of the statistic if it is an MRCA.
-     * @return the probability of the statistic at the MRCA
-     */
-    default Double probAtMRCA() {
-        return probAtMRCA(getModel());
-    }
-
-    /**
      * Computes analytically the probability using the supplied model. Note, {@code ac} is not
      * modified with the supplied {@code model}.
      * @param model model on which the computation is based
@@ -163,34 +120,5 @@ public interface AC<T extends AC<T, M>, M extends CoalescentModel> {
      * ac}
      */
     Double probAtMRCA(M model);
-
-
-    /* Model */
-
-    /**
-     * @return model for this statistic
-     */
-    M getModel();
-
-    /**
-     * Sets a new model for this statistic
-     * @param model new model for this statistic
-     * @throws IllegalArgumentException if the model is incompatible
-     */
-    void setModel(M model);
-
-
-    /* Misc: sample size, pending events by type */
-
-    /**
-     * @return allele count
-     */
-    Integer getN();
-
-    /**
-     * @param eventType allowed event type under this model
-     * @return number of further events pending of the supplied event type
-     */
-    Integer getPendingCount(EventType eventType);
 
 }
