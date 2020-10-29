@@ -15,13 +15,15 @@ import org.junit.Test;
  * @history Created on 3/27/2017.
  * @since since
  */
-public class EventTypeTest {
+public class PopGen_EventType__Test {
 
     @Test
-    public void test_eventTypes_toString() {
+    public void test_toString() {
 
-        Assert.assertEquals("C", EventType.COALESCENT.toString());
-        Assert.assertEquals("M", EventType.MUTATION.toString());
-        Assert.assertEquals("MG", EventType.MIGRATION.toString());
+        Assert.assertEquals("C", PopGen_EventType.COALESCENT);
+
+        Assert.assertEquals("M", PopGen_EventType.MUTATION);
+
+        Assert.assertEquals("MG", PopGen_EventType.MIGRATION);
     }
 }

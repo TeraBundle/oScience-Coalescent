@@ -12,7 +12,6 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 /**
- * @since
  * @version
  * @author Susanta Tewari
  * @history Created on 12/1/12.
@@ -43,18 +42,14 @@ public class CoalescentModel__Test {
     }
 
 
-    // <editor-fold desc="PopGenModel Impls">
 
     /**
-     * Class description
      *
-     * @version        Enter version here..., 12/12/03
-     * @author         Susanta Tewari
      */
     private static class DefaultCoalescentModel extends CoalescentModel {
 
         DefaultCoalescentModel() {
-            super(EventType.COALESCENT);
+            super(PopGen_EventType.COALESCENT);
         }
 
         public Double eventProb(final EventType type, final Integer n) {
@@ -63,10 +58,7 @@ public class CoalescentModel__Test {
     }
 
     /**
-     * Class description
      *
-     * @version        Enter version here..., 12/12/03
-     * @author         Susanta Tewari
      */
     private static class CoalescentModel_ERR_EMPTY extends CoalescentModel {
 
@@ -80,10 +72,7 @@ public class CoalescentModel__Test {
     }
 
     /**
-     * Class description
      *
-     * @version        Enter version here..., 12/12/03
-     * @author         Susanta Tewari
      */
     private static class CoalescentModel_ERR_NULL extends CoalescentModel {
 
@@ -97,5 +86,4 @@ public class CoalescentModel__Test {
     }
 
 
-    // </editor-fold>
 }

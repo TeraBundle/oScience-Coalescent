@@ -7,10 +7,15 @@
 package coalescent.model;
 
 /**
- * An enumeration of all type of population genetic events that are to be modelled and analyzed.<p>
- * A distinct abbreviation is defined for all event types that facilitates in printing.
+ * A functional extension of enumeration of population genetic events that are to be
+ * modelled and analyzed.<p>
+ *
+ * A distinct abbreviation is defined for all event types using {@linkplain #toString()}
+ * that facilitates in printing.
+ *
+ * @param <T> en Enum that extends this type
  * @author Susanta Tewari
- * @since 1.0.3 Oct 8, 2010
+ * @since 1.0.3 Oct 16, 2020
  */
 public interface EventType<T extends Enum<T> & EventType<T>> {
 
