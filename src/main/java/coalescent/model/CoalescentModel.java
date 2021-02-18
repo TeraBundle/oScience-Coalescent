@@ -27,7 +27,7 @@ import java.util.Objects;
  */
 public abstract class CoalescentModel implements Core_0_Model {
 
-    /** Field description */
+    
     private final ImmutableSet eventTypes;
 
     /**
