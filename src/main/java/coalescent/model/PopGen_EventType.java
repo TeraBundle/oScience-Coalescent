@@ -69,5 +69,5 @@ public enum PopGen_EventType implements EventType<PopGen_EventType> {
         public String toString() {
             return "R";
         }
-    };
+    }
 }
